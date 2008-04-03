@@ -5,8 +5,15 @@ Plugin URI: http://www.skullbit.com
 Description: Lock out users from accessing your website while performing upgrades or maintenance to your website, while still allowing certain user roles access.
 Author: Skullbit
 Author URI: http://www.skullbit.com
-Version: 1.0
+Version: 1.1
+
+CHANGLOG
+
+1.1 - April 3 2008 
+	* Added missing include file required to update htaccess file.
+	* Disabled Theme option as it is not yet available.
 */
+include_once(ABSPATH.'wp-admin/admin-functions.php');
 if( !class_exists( 'LockOutPlugin' ) ){
 	class LockOutPlugin{
 		
@@ -161,7 +168,7 @@ if( !class_exists( 'LockOutPlugin' ) ){
                         	</tr>
                             <tr valign="top">
                        			 <th scope="row"><label for="msg_theme"><?php _e('Message Template:', 'lockout');?></label></th>
-                        		<td><label><input type="radio" name="lockout_msg_template" disabled="disabled" id="msg_theme" value="1" <?php if ( get_option('lockout_msg_template') ) echo 'checked="checked"';?> /> <?php _e('Use Current Theme [Coming Soon]', 'lockout');?></label><br />
+                        		<td><label><input type="radio" disabled="disabled" name="lockout_msg_template" id="msg_theme" value="1" <?php if ( get_option('lockout_msg_template') ) echo 'checked="checked"';?> /> <?php _e('Use Current Theme - coming soon', 'lockout');?></label><br />
                                 <input type="radio" name="lockout_msg_template" id="msg_custom" value="0" <?php if ( !get_option('lockout_msg_template') ) echo 'checked="checked"';?> /> <?php _e('Custom', 'lockout');?></label></td>
                             </tr>
 						</tbody>
@@ -308,9 +315,8 @@ if( !class_exists( 'LockOutPlugin' ) ){
 					  "RewriteCond %{REQUEST_FILENAME} !-f";
 			
 			$lines = explode('RewriteCond %{REQUEST_FILENAME} !-f', $rewrite);
-			if( get_option('lockout_status') )
-				$rewrite = $lines[0] . $insert . $lines[1];
 				
+			$rewrite = $lines[0] . $insert . $lines[1];
 			return $rewrite;
 		}
 	}
